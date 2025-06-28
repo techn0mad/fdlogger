@@ -5,7 +5,14 @@
     <td><input name="callsign" value="{{ .Callsign }}" required></td>
     <td><input name="time" value="{{ .Time }}" required></td>
     <td><input name="frequency" value="{{ .Frequency }}" required></td>
-    <td><input name="mode" value="{{ .Mode }}" required></td>
+    <td>
+      <select name="mode" required>
+        <option value="">--Select Mode--</option>
+        {{ range .Modes }}
+            <option value="{{ . }}" {{if eq $.Mode .}}selected{{end}}>{{ . }}</option>
+        {{ end }}
+      </select>
+    </td>
     <td><input name="notes" value="{{ .Notes }}"></td>
     <td>
         <button type="submit">Save</button>

@@ -20,6 +20,21 @@ type LogEntry struct {
 	Notes     string
 }
 
+// List of allowed radio modes, editable in one place
+var allowedModes = []string{"CW", "SSB", "FM", "Digital"}
+
+// Used for the main page/add form/table
+type PageData struct {
+    Entries []LogEntry
+    Modes   []string
+}
+
+// Used for editing a single row
+type EditRowData struct {
+    LogEntry
+    Modes []string
+}
+
 var (
 	db        *sql.DB
 	templates = template.Must(template.ParseGlob("templates/*.html"))
@@ -62,47 +77,58 @@ func main() {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	entries := getAllLogs()
-	err := templates.ExecuteTemplate(w, "base.html", entries)
-        if err != nil {
-            log.Printf("TEMPLATE ERROR: %v", err)
-            http.Error(w, "Template error", 500)
-        }
+    data := PageData{
+        Entries: getAllLogs(),
+        Modes:   allowedModes,
+    }
+    err := templates.ExecuteTemplate(w, "base.html", data)
+    if err != nil {
+        log.Printf("TEMPLATE ERROR (base.html): %v", err)
+        http.Error(w, "Template error", 500)
+    }
 }
 
 func addHandler(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
-		http.Error(w, "ParseForm error", 400)
-		return
-	}
-	_, err := db.Exec(
-		`INSERT INTO logs (callsign, time, frequency, mode, notes) VALUES (?, ?, ?, ?, ?)`,
-		r.FormValue("callsign"), r.FormValue("time"), r.FormValue("frequency"), r.FormValue("mode"), r.FormValue("notes"),
-	)
-	if err != nil {
-		http.Error(w, "DB insert error", 500)
-		return
-	}
-	entries := getAllLogs()
-	err = templates.ExecuteTemplate(w, "logs.html", entries)
-        if err != nil {
-            log.Printf("TEMPLATE ERROR (logs.html): %v", err)
-            http.Error(w, "Template error", 500)
-        }
+    if err := r.ParseForm(); err != nil {
+        http.Error(w, "ParseForm error", 400)
+        return
+    }
+    _, err := db.Exec(
+        `INSERT INTO logs (callsign, time, frequency, mode, notes) VALUES (?, ?, ?, ?, ?)`,
+        r.FormValue("callsign"), r.FormValue("time"), r.FormValue("frequency"), r.FormValue("mode"), r.FormValue("notes"),
+    )
+    if err != nil {
+        http.Error(w, "DB insert error", 500)
+        return
+    }
+    data := PageData{
+        Entries: getAllLogs(),
+        Modes:   allowedModes,
+    }
+    err = templates.ExecuteTemplate(w, "entryarea.html", data)
+    if err != nil {
+        log.Printf("TEMPLATE ERROR (entryarea.html): %v", err)
+        http.Error(w, "Template error", 500)
+    }
 }
 
 func editHandler(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id")
-	row := db.QueryRow(`SELECT id, callsign, time, frequency, mode, notes FROM logs WHERE id = ?`, id)
-	var e LogEntry
-	if err := row.Scan(&e.ID, &e.Callsign, &e.Time, &e.Frequency, &e.Mode, &e.Notes); err != nil {
-		http.Error(w, "Not found", 404)
-		return
-	}
-	err := templates.ExecuteTemplate(w, "edit_row.html", e)
-        if err != nil { log.Printf("TEMPLATE ERROR (edit_row.html): %v", err)
-            http.Error(w, "Template error", 500)
-        }
+    id := r.URL.Query().Get("id")
+    row := db.QueryRow(`SELECT id, callsign, time, frequency, mode, notes FROM logs WHERE id = ?`, id)
+    var e LogEntry
+    if err := row.Scan(&e.ID, &e.Callsign, &e.Time, &e.Frequency, &e.Mode, &e.Notes); err != nil {
+        http.Error(w, "Not found", 404)
+        return
+    }
+    data := EditRowData{
+        LogEntry: e,
+        Modes:    allowedModes,
+    }
+    err := templates.ExecuteTemplate(w, "edit_row.html", data)
+    if err != nil {
+        log.Printf("TEMPLATE ERROR (edit_row.html): %v", err)
+        http.Error(w, "Template error", 500)
+    }
 }
 
 func updateHandler(w http.ResponseWriter, r *http.Request) {
