@@ -55,6 +55,7 @@ Sqllite, Go, HTMX
 
 ## TODOs
 
+- Test framework and tests!
 - Convert time to time and date
 - Add operator field, ensure each one is unique
 - Add band field
