@@ -53,3 +53,9 @@ Sqllite, Go, HTMX
 - Upgrades: Just rebuild and redeploy the binary.
 - Runs on Linux, Windows, Mac, Raspberry Pi: anywhere Go and SQLite work.
 
+## TODOs
+
+- Convert time to time and date
+- Add operator field, ensure each one is unique
+- Add band field
+- Check for log dupes
