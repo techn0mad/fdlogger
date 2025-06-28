@@ -1,0 +1,14 @@
+{{ define "content" }}
+<form hx-post="/add" hx-target="#logs" hx-swap="outerHTML">
+    <input name="callsign" placeholder="Callsign" required>
+    <input name="time" placeholder="Time" required>
+    <input name="frequency" placeholder="Frequency" required>
+    <input name="mode" placeholder="Mode" required>
+    <input name="notes" placeholder="Notes">
+    <button type="submit">Add Log</button>
+</form>
+<div id="logs">
+    {{ template "logs.html" . }}
+</div>
+{{ end }}
+

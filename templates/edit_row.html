@@ -1,0 +1,17 @@
+{{ define "edit_row.html" }}
+<tr id="log-{{ .ID }}">
+    <form hx-post="/update" hx-target="#log-{{ .ID }}" hx-swap="outerHTML">
+    <td>{{ .ID }}<input type="hidden" name="id" value="{{ .ID }}"></td>
+    <td><input name="callsign" value="{{ .Callsign }}" required></td>
+    <td><input name="time" value="{{ .Time }}" required></td>
+    <td><input name="frequency" value="{{ .Frequency }}" required></td>
+    <td><input name="mode" value="{{ .Mode }}" required></td>
+    <td><input name="notes" value="{{ .Notes }}"></td>
+    <td>
+        <button type="submit">Save</button>
+        <button type="button" hx-get="/logs/row?id={{ .ID }}" hx-target="#log-{{ .ID }}" hx-swap="outerHTML">Cancel</button>
+    </td>
+    </form>
+</tr>
+{{ end }}
+

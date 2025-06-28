@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Field Day Logger</title>
+    <script src="/static/htmx.min.js"></script>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { padding: 0.5em; border: 1px solid #ccc; }
+        form { margin-bottom: 2em; }
+        input[type="text"] { width: 100%; }
+        button { padding: 0.25em 1em; }
+    </style>
+</head>
+<body>
+    <h1>Field Day Logger</h1>
+    {{ block "content" . }}{{ end }}
+</body>
+</html>
+

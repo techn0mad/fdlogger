@@ -1,0 +1,14 @@
+{{ define "log_row.html" }}
+<tr id="log-{{ .ID }}">
+    <td>{{ .ID }}</td>
+    <td>{{ .Callsign }}</td>
+    <td>{{ .Time }}</td>
+    <td>{{ .Frequency }}</td>
+    <td>{{ .Mode }}</td>
+    <td>{{ .Notes }}</td>
+    <td>
+        <button hx-get="/edit?id={{ .ID }}" hx-target="#log-{{ .ID }}" hx-swap="outerHTML">Edit</button>
+    </td>
+</tr>
+{{ end }}
+
