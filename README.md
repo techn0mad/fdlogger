@@ -43,7 +43,7 @@ Sqllite, Go, HTMX
 
 - Home page renders the log table and the entry form.
 - Submitting the form sends an HTMX AJAX POST to /add, which inserts the row and responds with just the table HTML, swapped in-place.
-- No need for any front-end Javascript other than HTMX (which is a single file).
+- No need for any front-end Javascript other than [HTMX](https://htmx.org/) (which is a single file).
 - You can add edit/delete, search, filtering, export, etc., just as simply.
 
 ## Why This is So Portable and Maintainable
