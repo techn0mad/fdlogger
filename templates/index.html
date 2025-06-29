@@ -1,5 +1,19 @@
 {{ define "content" }}
 <div id="entryarea">
+    {{/*
+        hx-post="/add":
+            When the form is submitted, HTMX does a POST to /add (your addHandler in Go).
+
+        hx-target="#entryarea":
+            The HTML fragment returned by the server (the new form+table) will replace the <div id="entryarea">.
+
+        hx-swap="outerHTML":
+            Means the entire matched element (not just its contents) will be replaced.
+    */}}
+{{/* 
+  The "mode" dropdown options are generated from .Modes, provided by the Go handler.
+  If you add new modes in Go, they'll show up here automatically.
+*/}}
     <form hx-post="/add" hx-target="#entryarea" hx-swap="outerHTML">
         <input name="callsign" placeholder="Callsign" required>
         <input name="time" placeholder="Time" required>

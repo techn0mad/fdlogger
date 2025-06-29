@@ -1,3 +1,13 @@
+{{/*
+    hx-get="/edit?id={{ .ID }}":
+        When the Edit button is clicked, HTMX does a GET to /edit?id=<the row’s ID>.
+
+    hx-target="#log-{{ .ID }}":
+        The HTML fragment returned will replace this row in the table (which has id="log-123" for example).
+
+    hx-swap="outerHTML":
+        Replaces the whole row.
+*/}}
 {{ define "log_row.html" }}
 <tr id="log-{{ .ID }}">
     <td>{{ .ID }}</td>

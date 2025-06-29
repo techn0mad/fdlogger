@@ -1,3 +1,19 @@
+{{/*
+    hx-post="/update":
+        Submitting the edit form does a POST to /update (handled by updateHandler).
+
+    hx-target="#log-{{ .ID }}":
+        The returned fragment (an updated table row) will replace the edited row.
+
+    hx-swap="outerHTML":
+        Swaps the entire <tr> row.
+
+    hx-get="/logs/row?id={{ .ID }}":
+        HTMX gets the standard row display for this log entry.
+
+    hx-target="#log-{{ .ID }}" & hx-swap="outerHTML":
+        It swaps the row back to display mode.
+*/}}
 {{ define "edit_row.html" }}
 <tr id="log-{{ .ID }}">
     <form hx-post="/update" hx-target="#log-{{ .ID }}" hx-swap="outerHTML">
